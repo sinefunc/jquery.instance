@@ -19,7 +19,9 @@ Use one: make sure that there will only be one instance of an object.
 Usage (two)
 -----------
 
-It can be used for pseudo-classes.
+It can be used for making 'pseudo-classes' for jQuery objects by
+letting you extend your objects with methods and properties
+from another object (a 'mixin').
 
     // This is a mixin with properties/methods that will be added
     // to a jQuery object.
@@ -46,20 +48,23 @@ Why?
 ----
 
 When creating interfaces in JavaScript, things can get really
-complicated and OOP is sometimes a very good solution.
+complicated and sometimes, doing things the OOP way is a very
+sane solution.
 
 For instance, if I were to create a spin button widget,
-I can do something like this:
+I can do something make a jQuery object like this:
 
-    var $spin = $.spinbutton();
+    var $spin = $.spinbutton(); // Returns a jQuery object
     $("#container").append($spin);
+
+    $spin.show();
+
+But that object will also still be able to keep state, and
+have some custom functions!
 
     $spin.setValue(4);
     $spin.add();
-
-    // $spin will still be a jQuery object!
-    $spin.css({ 'top': '200px' });
-    $spin.hide();
+    $spin.comment = "Hello";
 
 From here, `$.spinbutton` can be simply a $("...") generator
 that, in the end, will call `instance()` to extend the
