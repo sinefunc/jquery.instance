@@ -21,8 +21,8 @@ be another object altogether and your extensions will not be available.
 
     $("a.reload-sidebar").click(function() {
         var $sb = $("#sidebar");
-        $sb.load(); // Error: `load` is not defined
-        $sidebar == $sb; //=> false
+        $sb.load();       // Error: `load` is not defined
+        $sidebar == $sb;  // false
     });
 
 If you were to use `$("#sidebar").instance()` instead, you'll
@@ -34,7 +34,7 @@ be sure that `$sb` and `$sidebar` will be the same function.
     $("a.reload-sidebar").click(function() {
         var $sb = $("#sidebar").instance();
         $sb.load();
-        $sidebar == $sb; //=> true
+        $sidebar == $sb;  // true
     });
 
 Usage
@@ -46,9 +46,9 @@ Use `.instance()` to make sure that there will only be one instance of an object
     $one.abc = 42;
   
     var $two = $("#sidebar").instance(); // will be the same as $one
-    $two.abc; //=> 42
-    $one == $two; //=> true
-    $two.show(); // still a jQuery object equivalent to $("#sidebar")
+    $two.abc;      // 42
+    $one == $two;  // true
+    $two.show();   // still a jQuery object equivalent to $("#sidebar")
 
 It can also be used for making 'pseudo-classes' for jQuery objects by
 letting you extend your objects with methods and properties
@@ -59,7 +59,7 @@ from another object (a 'mixin').
     var Sidebar = {
       name: 'My sidebar',
       expand: function () {
-        this.slideDown('fast'); // `this` here is a jQuery object.
+        this.slideDown('fast');
       }
     };
     
@@ -67,10 +67,10 @@ from another object (a 'mixin').
     // $(x).instance().extend(Sidebar);
     var $one = $("#sidebar").instance(Sidebar);
     $one.expand();
-    $one.name; // 'My sidebar'
+    $one.name;      // 'My sidebar'
     
     var $two = $("#sidebar").instance();
-    $two.expand(); // Same as $one.expand()
+    $two.expand();  // Same as $one.expand()
 
 
 Hypothetical example
