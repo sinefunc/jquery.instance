@@ -3,70 +3,94 @@ jQuery.instance
 
 Easy states and mixins for jQuery objects.
 
+Why use jQuery.instance?
+------------------------
+
+When creating interfaces with complicated JavaScript behavior,
+things can get really complicated real quick. Sometimes, doing
+things the OOP way can be a very sane solution.
+
+You can easily extend an object like so:
+
+    var $sidebar = $("#sidebar");
+    $sidebar.load = function() { /* ... */ };
+    $sidebar.load();
+
+If you were to access that in another area of your script, it'd
+be another object altogether and your extensions will not be available.
+
+    $("a.reload-sidebar").click(function() {
+        var $sb = $("#sidebar");
+        $sb.load(); // Error: `load` is not defined
+        $sidebar == $sb; //=> false
+    });
+
+If you were to use `$("#sidebar").instance()` instead, you'll
+be sure that `$sb` and `$sidebar` will be the same function.
+
+    var $sidebar = $("#sidebar").instance();
+    $sidebar.load = function() { /* ... */ };
+
+    $("a.reload-sidebar").click(function() {
+        var $sb = $("#sidebar").instance();
+        $sb.load();
+        $sidebar == $sb; //=> true
+    });
+
 Usage
 -----
 
-Use one: make sure that there will only be one instance of an object.
+Use `.instance()` to make sure that there will only be one instance of an object.
 
     var $one = $("#sidebar").instance();
     $one.abc = 42;
-    $one.hide(); // $one is still a jQuery object equivalent to $("#sidebar")
   
-    var $two = $("#sidebar").instance();
+    var $two = $("#sidebar").instance(); // will be the same as $one
     $two.abc; //=> 42
-    $two.show();
+    $one == $two; //=> true
+    $two.show(); // still a jQuery object equivalent to $("#sidebar")
 
-Usage (two)
------------
-
-It can be used for making 'pseudo-classes' for jQuery objects by
+It can also be used for making 'pseudo-classes' for jQuery objects by
 letting you extend your objects with methods and properties
 from another object (a 'mixin').
 
     // This is a mixin with properties/methods that will be added
     // to a jQuery object.
-    var Rule = {
-      name: 'John Doe',
-      klass: 'Rule',
+    var Sidebar = {
+      name: 'My sidebar',
       expand: function () {
-        // `this` here is a jQuery object.
-        this.hide();
-        this.slideDown('fast');
+        this.slideDown('fast'); // `this` here is a jQuery object.
       }
     };
     
-    // Use two: extend an object with a mixin.
-    var $one = $("#sidebar").instance(Rule);
+    // Calling $(x).instance(Sidebar) is the same as:
+    // $(x).instance().extend(Sidebar);
+    var $one = $("#sidebar").instance(Sidebar);
     $one.expand();
-    $one.name; // 'Rule'
+    $one.name; // 'My sidebar'
     
     var $two = $("#sidebar").instance();
-    $two.expand(); // Methods from the mixin is retained since
-                   // $one and $two are the same
+    $two.expand(); // Same as $one.expand()
 
-Why?
-----
 
-When creating interfaces in JavaScript, things can get really
-complicated and sometimes, doing things the OOP way is a very
-sane solution.
+Hypothetical example
+--------------------
 
-For instance, if I were to create a spin button widget,
-I can do something make a jQuery object like this:
+Let's say that we're to create a spin button widget.
+We can have a function that returns a jQuery object like this:
 
     var $spin = $.spinbutton(); // Returns a jQuery object
     $("#container").append($spin);
-
     $spin.show();
 
-But that object will also still be able to keep state, and
-have some custom functions!
+But we'd also want that object to be able to keep a state
+(i.e., variables), and have some custom functions like so:
 
     $spin.setValue(4);
     $spin.add();
     $spin.comment = "Hello";
 
-From here, `$.spinbutton` can be simply a $("...") generator
+From here, `$.spinbutton` can be simply a `$("...")` generator
 that, in the end, will call `instance()` to extend the
 object:
 
