@@ -16,7 +16,7 @@ You can easily extend an object like so:
     $sidebar.load = function() { /* ... */ };
     $sidebar.load();
 
-If you were to access that in another area of your script, it'd
+...but if you were to access that in another area of your script, it'd
 be another object altogether and your extensions will not be available.
 
     $("a.reload-sidebar").click(function() {
@@ -26,7 +26,7 @@ be another object altogether and your extensions will not be available.
     });
 
 If you were to use `$("#sidebar").instance()` instead, you'll
-be sure that `$sb` and `$sidebar` will be the same function.
+be sure that `$sb` and `$sidebar` will be the same object.
 
     var $sidebar = $("#sidebar").instance();
     $sidebar.load = function() { /* ... */ };
