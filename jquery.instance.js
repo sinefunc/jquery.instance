@@ -1,14 +1,14 @@
 // jQuery.instance
-// ---------------
+// http://github.com/sinefunc/jquery.instance
 
 ;(function($) {
   $.fn.instance = function (type) {
     var $this = this.first();
     var $this = $this.data('instance') || ($this.data('instance', $this) && $this);
 
-    if ((type) && ((!$this._className) || ($this._className != type))) {
+    if ((type) && ((!$this._class) || ($this._class != type))) {
       $this.extend(type);
-      $this._className = type;
+      $this._class = type;
     }
 
     return $this;
@@ -19,14 +19,13 @@
  *
  *   var $one = $("#sidebar").instance();
  *   var $two = $("#sidebar").instance();
- *   $one.abc = 42;
- *   $two.abc; //=> 42
+ *   $one == $two; // true
  *
- *   var Rule = {
+ *   var Sidebar = {
  *     expand: function () { ... }
  *   };
  *   
- *   var $one = $("#sidebar").instance(Rule);
+ *   var $one = $("#sidebar").instance(Sidebar);
  *   $one.expand();
  */
 
