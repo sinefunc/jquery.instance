@@ -52,12 +52,18 @@ For instance, if I were to create a spin button widget,
 I can do something like this:
 
     var $spin = $.spinbutton();
+    $("#container").append($spin);
+
     $spin.setValue(4);
     $spin.add();
 
     // $spin will still be a jQuery object!
     $spin.css({ 'top': '200px' });
     $spin.hide();
+
+From here, `$.spinbutton` can be simply a $("...") generator
+that, in the end, will call `instance()` to extend the
+object:
 
     $.spinbutton = function() {
       var $button = $("<div class='spin-button'>")
@@ -70,6 +76,8 @@ I can do something like this:
       return $button.instance(SpinButton);
     },
 
+And the mixin can look like this:
+
     var SpinButton = {
       $display: function () { return this.find('span.display'); },
       setValue: function (val) { this.$display().html(val); },
@@ -77,6 +85,18 @@ I can do something like this:
       add:      function () { this.setValue(this.getValue + 1); },
       subtract: function () { this.setValue(this.getValue - 1); }
     };
+
+Now, the functions can be used elsewhere!
+
+    /* Elsewhere */ {
+        var $button = $("#container .spin-button").instance();
+        $button.setValue(200);
+    }
+
+Without the `.instance()`, the `$("#container .spin-button")` will simply
+return a jQuery object /without/ the mixin we defined. Calling `.instance()`
+will return the very same JavaScript object that was created earlier,
+maintaining it's state and mixins.
 
 Authors
 -------
