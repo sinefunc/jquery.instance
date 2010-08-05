@@ -6,9 +6,9 @@
     var $this = this.first();
     var $this = $this.data('instance') || ($this.data('instance', $this) && $this);
 
-    // Tip: Implement a 'klass' property to make sure extending doesn't happen twice.
-    if ((type) && ((!$this.klass) || (!type.klass) || ($this.klass != type.klass))) {
+    if ((type) && ((!$this._className) || ($this._className != type))) {
       $this.extend(type);
+      $this._className = type;
     }
 
     return $this;
