@@ -1,20 +1,5 @@
-/* jQuery.instance
- * ---------------
- *
- * Quick guide:
- *
- *   var $one = $("#sidebar").instance();
- *   var $two = $("#sidebar").instance();
- *   $one.abc = 42;
- *   $two.abc; //=> 42
- *
- *   var Rule = {
- *     expand: function () { ... }
- *   };
- *   
- *   var $one = $("#sidebar").instance(Rule);
- *   $one.expand();
- */
+// jQuery.instance
+// ---------------
 
 ;(function($) {
   $.fn.instance = function (type) {
@@ -29,3 +14,19 @@
     return $this;
   };
 })(jQuery);
+
+/* Quick usage guide:
+ *
+ *   var $one = $("#sidebar").instance();
+ *   var $two = $("#sidebar").instance();
+ *   $one.abc = 42;
+ *   $two.abc; //=> 42
+ *
+ *   var Rule = {
+ *     expand: function () { ... }
+ *   };
+ *   
+ *   var $one = $("#sidebar").instance(Rule);
+ *   $one.expand();
+ */
+
